@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 84" width="110" height="84" role="img" aria-label="Flying toast">
+  <!-- wings -->
+  <g fill="#f4f7ff" opacity="0.92">
+    <path d="M18 34C4 26 2 14 12 9c3 11 10 18 20 21z"/>
+    <path d="M92 34c14-8 16-20 6-25-3 11-10 18-20 21z"/>
+  </g>
+  <!-- crust -->
+  <path d="M36 14h38a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8H36a8 8 0 0 1-8-8V38c-6 0-10-4-10-10s4-10 10-10a8 8 0 0 1 8-4z" fill="#e0a95e"/>
+  <!-- bread -->
+  <path d="M38 22h34a4 4 0 0 1 4 4v34a4 4 0 0 1-4 4H38a4 4 0 0 1-4-4V40c-4-1-6-4-6-8s3-8 7-8a4 4 0 0 1 3-2z" fill="#ffd79a"/>
+  <!-- butter -->
+  <path d="M44 30h22l-6 12H48z" fill="#ffc94d" opacity="0.75"/>
+  <g fill="#7a4a1e">
+    <circle cx="46" cy="46" r="2.6"/>
+    <circle cx="62" cy="46" r="2.6"/>
+  </g>
+  <path d="M46 54q8 6 16 0" stroke="#7a4a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+</svg>

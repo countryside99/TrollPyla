@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 120" width="130" height="120" role="img" aria-label="Dinosaur">
+  <g fill="#6fcf7f">
+    <!-- neck + head -->
+    <path d="M52 118V52c0-20 14-34 34-34s34 13 34 30c0 16-12 26-28 26H86v44z"/>
+    <!-- snout -->
+    <path d="M116 44h14a4 4 0 0 1 0 8h-14z"/>
+    <!-- back spikes -->
+    <path d="M54 60l-10 8 10 4z"/>
+    <path d="M54 78l-10 8 10 4z"/>
+    <path d="M56 40l-11 6 11 6z"/>
+  </g>
+  <g fill="#4fae60">
+    <path d="M86 74h20v12H86z"/>
+  </g>
+  <circle cx="104" cy="40" r="4" fill="#12220f"/>
+  <circle cx="105.4" cy="38.8" r="1.4" fill="#ffffff"/>
+  <path d="M112 56h16" stroke="#12220f" stroke-width="2.4" stroke-linecap="round"/>
+</svg>

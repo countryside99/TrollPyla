@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 70" width="80" height="70" role="img" aria-label="Duck">
+  <g fill="#ffd23f">
+    <ellipse cx="36" cy="40" rx="26" ry="17"/>
+    <circle cx="58" cy="22" r="13"/>
+    <path d="M12 34c-8-2-12-8-10-14 3 6 7 9 13 10z"/>
+  </g>
+  <path d="M69 21h13l-11 9z" fill="#f4791f"/>
+  <g fill="#f4791f">
+    <rect x="28" y="54" width="6" height="12" rx="3"/>
+    <rect x="44" y="54" width="6" height="12" rx="3"/>
+    <path d="M24 64h14l-3 5H27z"/>
+    <path d="M40 64h14l-3 5H43z"/>
+  </g>
+  <circle cx="61" cy="19" r="2.4" fill="#2a1f18"/>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 84" width="130" height="84" role="img" aria-label="Cat">
+  <g fill="#f2a05c">
+    <!-- tail -->
+    <path d="M20 54c-11-3-17-14-13-24 2 9 7 14 15 17z"/>
+    <!-- body -->
+    <path d="M18 58c0-16 11-24 28-24h26c15 0 23 9 23 21v7H18z"/>
+    <!-- head -->
+    <circle cx="101" cy="36" r="16"/>
+    <!-- ears -->
+    <path d="M89 24l-4-16 15 9z"/>
+    <path d="M107 23l11-13 3 17z"/>
+  </g>
+  <g fill="#e08b45">
+    <rect x="28" y="60" width="9" height="20" rx="4.5"/>
+    <rect x="48" y="60" width="9" height="20" rx="4.5"/>
+    <rect x="70" y="60" width="9" height="20" rx="4.5"/>
+    <rect x="88" y="60" width="9" height="20" rx="4.5"/>
+  </g>
+  <g fill="#2a1f18">
+    <circle cx="96" cy="34" r="2.6"/>
+    <circle cx="107" cy="34" r="2.6"/>
+    <path d="M98 42h7l-3.5 3.4z"/>
+  </g>
+  <g stroke="#2a1f18" stroke-width="1.2" stroke-linecap="round" opacity="0.55">
+    <path d="M110 41h13"/>
+    <path d="M110 44h12"/>
+    <path d="M93 41H80"/>
+    <path d="M93 44H81"/>
+  </g>
+</svg>

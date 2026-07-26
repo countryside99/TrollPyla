@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 90" width="120" height="90" role="img" aria-label="Flying toaster">
+  <!-- wings -->
+  <g fill="#dfe5f0" opacity="0.9">
+    <path d="M14 34C2 24 2 12 12 8c4 10 12 16 22 18z"/>
+    <path d="M96 34c12-10 12-22 2-26-4 10-12 16-22 18z"/>
+  </g>
+  <!-- toast -->
+  <g fill="#e2a75b">
+    <path d="M42 12h20a6 6 0 0 1 6 6v16H36V18a6 6 0 0 1 6-6z"/>
+  </g>
+  <!-- body -->
+  <rect x="22" y="32" width="76" height="44" rx="10" fill="#b9c2d0"/>
+  <rect x="22" y="32" width="76" height="12" rx="6" fill="#cfd7e4"/>
+  <rect x="34" y="36" width="52" height="5" rx="2.5" fill="#7c8494"/>
+  <rect x="30" y="52" width="38" height="4" rx="2" fill="#8f98a8"/>
+  <rect x="30" y="60" width="26" height="4" rx="2" fill="#8f98a8"/>
+  <circle cx="86" cy="60" r="7" fill="#ff2a44"/>
+  <rect x="96" y="46" width="12" height="6" rx="3" fill="#8f98a8"/>
+</svg>

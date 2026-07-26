@@ -1,0 +1,63 @@
+# TrollPyla humour subsystem.
+# Set enabled = false to get the original PylaAI startup experience back.
+enabled = true
+
+# "calm" | "normal" | "chaotic" - controls how often gags fire and how long
+# the fake certification sequence is.
+intensity = "normal"
+
+# Fake loading / certification stages shown before Start becomes available.
+startup_sequence = true
+
+# Absurd mini-challenges shown after the fake loading stages.
+startup_challenges = true
+
+# The completely pointless "Choose your language" screen. Whatever you pick, the
+# app continues in English and pretends the choice was profound.
+language_prompt = true
+
+# The geopolitical examination on the Release The Beast button.
+country_quiz = true
+
+# Border control on each section: one question per section, asked once per session.
+section_quizzes = true
+
+# Banner, fake boot report and silly log lines in the terminal.
+console_nonsense = true
+
+# Random visual events (cats, ducks, toasters, UFOs, ...) during startup.
+random_events = true
+
+# Occasional visual gags while the bot is actually running.
+runtime_gags = true
+
+# Extra playful status lines while the bot is running.
+funny_status_messages = true
+
+# Rename the whole interface (Settings -> Chaos Control, CPU -> Thinking Potato,
+# Start -> Release The Beast, ...). Purely cosmetic: only visible text and a few
+# descriptive attributes are rewritten, never values the bot reads.
+rename_ui = true
+
+# Fake error dialogs that appear, panic, apologise and delete themselves.
+fake_errors = true
+
+# Random confetti for absolutely no reason.
+confetti = true
+
+# Master switch for motion. When false everything is static / instant.
+animations = true
+
+# How many absurd challenges to ask (1-5, clamped).
+challenge_count = 2
+
+# Seconds before Escape starts working during the startup sequence (0-30, clamped).
+skip_delay_seconds = 4
+
+# Hard watchdog. The startup overlay always self-destructs after this many
+# seconds so the user can never get stuck (5-120, clamped).
+max_startup_seconds = 30
+
+# Replay the certification on every launch. When false it only runs once per
+# browser session.
+replay_every_launch = true

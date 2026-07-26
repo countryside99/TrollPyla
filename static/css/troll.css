@@ -1,0 +1,775 @@
+/* =========================================================================
+   TROLLPYLA - HUMOUR LAYER
+   -------------------------------------------------------------------------
+   Every selector in this file is prefixed with `troll-` (or lives inside
+   #troll-layer / .troll-overlay) so it can never collide with the upstream
+   PylaAI stylesheet. Deleting this file only removes the jokes.
+
+   Stacking scale used by upstream tailwind.css:
+     sidebar 10 | queue dock 20 | toast 200 | history 280 | modal 300 | tooltip 500
+   TrollPyla adds:
+     boot overlay 600 | gag layer 650 (pointer-events: none, purely decorative)
+   ========================================================================= */
+
+:root {
+    --troll-cat: #f2a05c;
+    --troll-duck: #ffd23f;
+    --troll-ink: rgba(10, 11, 14, 0.96);
+    --troll-glow: rgba(255, 210, 63, 0.35);
+}
+
+/* =========================================================================
+   GAG LAYER
+   ========================================================================= */
+#troll-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 650;
+    pointer-events: none;
+    overflow: hidden;
+    /* Layout/paint containment keeps gag animations off the app's render path.
+       Size containment is deliberately omitted: the layer is sized by `inset`. */
+    contain: layout style paint;
+}
+
+/* An "actor" is the positioned container that carries the travel animation.
+   The sprite inside carries its own idle animation (bob, waddle, dance, ...)
+   so the two never fight over `transform`. */
+.troll-actor {
+    position: absolute;
+    will-change: transform, opacity;
+}
+
+.troll-sprite {
+    position: relative;
+    will-change: transform;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+    user-select: none;
+}
+
+.troll-vanish { animation: troll-fade-out 420ms ease forwards; }
+
+.troll-sprite img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* --- walking / waddling across the screen --- */
+@keyframes troll-cross-right {
+    from { transform: translate3d(-160px, 0, 0); }
+    to   { transform: translate3d(calc(100vw + 160px), 0, 0); }
+}
+@keyframes troll-cross-left {
+    from { transform: translate3d(calc(100vw + 160px), 0, 0) scaleX(-1); }
+    to   { transform: translate3d(-160px, 0, 0) scaleX(-1); }
+}
+@keyframes troll-bob {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50%      { transform: translateY(-7px) rotate(1.5deg); }
+}
+@keyframes troll-waddle {
+    0%, 100% { transform: rotate(-7deg); }
+    50%      { transform: rotate(7deg); }
+}
+
+.troll-cross-right { animation: troll-cross-right linear forwards; }
+.troll-cross-left  { animation: troll-cross-left  linear forwards; }
+.troll-inner-bob    { animation: troll-bob 0.55s ease-in-out infinite; }
+.troll-inner-waddle { animation: troll-waddle 0.4s ease-in-out infinite; }
+
+/* --- flying toaster --- */
+@keyframes troll-fly {
+    from { transform: translate3d(-180px, 40px, 0) rotate(-8deg); }
+    to   { transform: translate3d(calc(100vw + 180px), -60px, 0) rotate(8deg); }
+}
+.troll-fly { animation: troll-fly 5.5s linear forwards; }
+
+/* --- dinosaur peeking in from the edge --- */
+@keyframes troll-peek {
+    0%        { transform: translateY(105%); }
+    18%, 74%  { transform: translateY(6%); }
+    100%      { transform: translateY(105%); }
+}
+.troll-peek { animation: troll-peek 4.4s cubic-bezier(0.34, 1.3, 0.64, 1) forwards; }
+
+/* --- UFO abduction --- */
+.troll-abduct { display: grid; justify-items: center; gap: 0; }
+.troll-abduct-target {
+    padding: 4px 10px;
+    border-radius: var(--radius-pill, 999px);
+    background: rgba(255, 68, 68, 0.16);
+    border: 1px solid rgba(255, 68, 68, 0.4);
+    color: #ffb3b3;
+    font: 700 0.72rem/1.2 var(--font, sans-serif);
+    white-space: nowrap;
+    animation: troll-abduct-rise 3.6s ease-in forwards;
+}
+@keyframes troll-abduct-rise {
+    0%        { transform: translateY(0) scale(1); opacity: 1; }
+    70%       { transform: translateY(-56px) scale(0.7); opacity: 0.9; }
+    100%      { transform: translateY(-92px) scale(0.1); opacity: 0; }
+}
+@keyframes troll-hover {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+.troll-hover { animation: troll-hover 2s ease-in-out infinite; }
+
+/* --- dancing banana --- */
+@keyframes troll-dance {
+    0%, 100% { transform: rotate(-14deg) translateY(0); }
+    25%      { transform: rotate(10deg) translateY(-12px); }
+    50%      { transform: rotate(-8deg) translateY(0); }
+    75%      { transform: rotate(14deg) translateY(-9px); }
+}
+.troll-dance { animation: troll-dance 0.62s ease-in-out infinite; }
+
+/* --- confused penguin --- */
+@keyframes troll-confused {
+    0%, 100% { transform: rotate(0deg); }
+    20%      { transform: rotate(-11deg); }
+    60%      { transform: rotate(11deg); }
+}
+.troll-confused { animation: troll-confused 1.5s ease-in-out infinite; }
+
+/* --- floating paw prints --- */
+@keyframes troll-paw-float {
+    0%   { transform: translateY(10px) scale(0.7) rotate(var(--troll-paw-rot, 0deg)); opacity: 0; }
+    25%  { opacity: 0.85; }
+    100% { transform: translateY(-120px) scale(1) rotate(var(--troll-paw-rot, 0deg)); opacity: 0; }
+}
+.troll-paw { animation: troll-paw-float 3.4s ease-out forwards; }
+
+/* --- googly eyes --- */
+.troll-googly {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+.troll-eye {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #12161f;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+.troll-pupil {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #12161f;
+    transition: transform 90ms linear;
+}
+
+/* --- self-dismissing popups (404 Motivation Not Found) --- */
+.troll-popup {
+    position: absolute;
+    min-width: 190px;
+    padding: 14px 16px;
+    border-radius: var(--radius-md, 10px);
+    background: var(--troll-ink);
+    border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.15));
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+    animation: troll-popup-life 4.2s ease forwards;
+}
+.troll-popup strong {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--brand-main, #ff2a44);
+    line-height: 1;
+}
+.troll-popup span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-secondary, #8e95a5);
+}
+.troll-popup em {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.68rem;
+    font-style: normal;
+    color: var(--text-muted, #5e6473);
+}
+@keyframes troll-popup-life {
+    0%        { transform: translateY(12px) scale(0.94); opacity: 0; }
+    10%, 80%  { transform: translateY(0) scale(1); opacity: 1; }
+    100%      { transform: translateY(-8px) scale(0.97); opacity: 0; }
+}
+
+/* --- cat batting at a spinner --- */
+@keyframes troll-bat {
+    0%, 100% { transform: rotate(0deg); }
+    40%      { transform: rotate(-13deg) translateX(-6px); }
+    70%      { transform: rotate(9deg) translateX(4px); }
+}
+.troll-bat { animation: troll-bat 0.9s ease-in-out infinite; }
+
+/* =========================================================================
+   STARTUP CERTIFICATION OVERLAY
+   ========================================================================= */
+.troll-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: radial-gradient(circle at 50% 20%, rgba(255, 42, 68, 0.08), transparent 55%), rgba(4, 4, 6, 0.9);
+    backdrop-filter: blur(16px);
+    animation: troll-fade-in 220ms ease both;
+}
+.troll-overlay.troll-closing { animation: troll-fade-out 260ms ease both; }
+
+@keyframes troll-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes troll-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+.troll-card {
+    width: min(560px, 100%);
+    background: rgba(16, 17, 22, 0.97);
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    border-radius: var(--radius-lg, 14px);
+    box-shadow: 0 26px 70px rgba(0, 0, 0, 0.62);
+    padding: 26px 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.troll-body { display: flex; flex-direction: column; gap: 12px; min-height: 132px; }
+.troll-body [data-troll-feedback]:empty { display: none; }
+
+.troll-card-head { display: flex; align-items: center; gap: 14px; }
+.troll-card-head img { width: 38px; height: 38px; filter: drop-shadow(0 0 10px var(--brand-glow, rgba(255, 42, 68, 0.4))); }
+.troll-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand-main, #ff2a44);
+}
+.troll-card-head h2 { font-size: 1.22rem; font-weight: 900; line-height: 1.2; }
+
+/* --- progress --- */
+.troll-progress-track {
+    position: relative;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    /* Visible, not hidden: the progress-stealing goblin needs to stand on top. */
+    overflow: visible;
+}
+
+/* The goblin that occasionally walks off with a chunk of the progress bar. */
+.troll-goblin-thief {
+    position: absolute;
+    bottom: -6px;
+    width: 34px;
+    height: auto;
+    pointer-events: none;
+    animation: troll-goblin-heist 1.15s ease-in-out forwards;
+}
+@keyframes troll-goblin-heist {
+    0%   { left: 30%; opacity: 0; transform: translateY(6px) scaleX(-1); }
+    18%  { opacity: 1; transform: translateY(0) scaleX(-1); }
+    100% { left: 96%; opacity: 0; transform: translateY(-2px) scaleX(-1); }
+}
+.troll-progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff2a44, #ff7089);
+    transition: width 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.troll-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-muted, #5e6473);
+}
+
+.troll-stage-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 24px;
+    font-size: 0.92rem;
+    font-weight: 650;
+    color: var(--text-primary, #fff);
+}
+.troll-stage-line.troll-interrupt { color: #ffcf6b; }
+
+.troll-spinner {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    border-top-color: var(--brand-main, #ff2a44);
+    animation: troll-spin 0.8s linear infinite;
+}
+@keyframes troll-spin { to { transform: rotate(360deg); } }
+
+.troll-stage-log {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 116px;
+    overflow: hidden;
+}
+.troll-stage-log li {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted, #5e6473);
+    display: flex;
+    gap: 8px;
+    animation: troll-log-in 200ms ease both;
+}
+.troll-stage-log li b { color: var(--success, #22c55e); font-weight: 900; }
+@keyframes troll-log-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* --- challenges --- */
+.troll-challenge { display: flex; flex-direction: column; gap: 14px; }
+.troll-challenge-count {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted, #5e6473);
+}
+.troll-question { font-size: 1.1rem; font-weight: 800; line-height: 1.35; }
+.troll-hint { font-size: 0.8rem; color: var(--text-secondary, #8e95a5); }
+
+.troll-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.troll-option {
+    padding: 11px 14px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    background: rgba(255, 255, 255, 0.03);
+    font-weight: 700;
+    font-size: 0.86rem;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+.troll-option:hover { border-color: var(--border-brand, rgba(255, 42, 68, 0.3)); background: rgba(255, 42, 68, 0.1); transform: translateY(-1px); }
+.troll-option:focus-visible { outline: 2px solid var(--brand-main, #ff2a44); outline-offset: 2px; }
+
+.troll-field { display: flex; gap: 10px; align-items: stretch; }
+.troll-field input[type="text"],
+.troll-field input[type="number"] {
+    flex: 1;
+    padding: 11px 13px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary, #fff);
+    font-weight: 650;
+}
+.troll-field input:focus { border-color: var(--border-brand, rgba(255, 42, 68, 0.3)); }
+
+.troll-invisible-zone {
+    height: 128px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    display: grid;
+    place-items: center;
+    cursor: crosshair;
+    color: var(--text-muted, #5e6473);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px;
+}
+.troll-invisible-zone.troll-revealed { border-color: rgba(255, 210, 63, 0.45); color: #ffd23f; }
+.troll-invisible-zone:focus-visible { outline: 2px solid var(--brand-main, #ff2a44); outline-offset: 2px; }
+
+.troll-dial { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.troll-moon {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #f6f7fb, #b7bdcc 62%, #8b91a2);
+    box-shadow: inset -10px -6px 18px rgba(0, 0, 0, 0.35), 0 0 26px rgba(255, 255, 255, 0.12);
+    position: relative;
+    transition: transform 120ms ease-out;
+}
+.troll-moon::after,
+.troll-moon::before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.12);
+}
+.troll-moon::before { width: 16px; height: 16px; top: 16px; left: 42px; }
+.troll-moon::after  { width: 10px; height: 10px; top: 44px; left: 20px; }
+.troll-dial input[type="range"] { width: 100%; accent-color: var(--brand-main, #ff2a44); }
+.troll-dial-value { font-size: 0.78rem; font-weight: 800; color: var(--text-secondary, #8e95a5); }
+
+.troll-feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 11px 13px;
+    border-radius: var(--radius-md, 10px);
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    color: #9ff0bd;
+    font-size: 0.84rem;
+    font-weight: 700;
+    animation: troll-log-in 200ms ease both;
+}
+.troll-feedback.is-wrong {
+    background: rgba(255, 68, 68, 0.1);
+    border-color: rgba(255, 68, 68, 0.3);
+    color: #ffb3b3;
+    animation: troll-shake 340ms ease;
+}
+.troll-feedback.is-wrong span { font-weight: 650; color: var(--troll-duck); }
+.troll-feedback.is-surrender {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-strong, rgba(255, 255, 255, 0.15));
+    color: var(--text-secondary, #8e95a5);
+}
+
+/* Options the user has already tried and had rejected. */
+.troll-option.is-ruled-out {
+    opacity: 0.42;
+    text-decoration: line-through;
+    border-style: dashed;
+}
+
+.troll-challenge-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 22px;
+}
+
+.troll-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    padding-top: 14px;
+}
+.troll-skip {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted, #5e6473);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+}
+.troll-skip:hover { color: var(--text-primary, #fff); }
+.troll-skip:focus-visible { outline: 2px solid var(--brand-main, #ff2a44); outline-offset: 3px; }
+.troll-skip[hidden] { display: none; }
+
+.troll-enter {
+    padding: 11px 22px;
+    border-radius: var(--radius-md, 10px);
+    background: var(--brand-main, #ff2a44);
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-shadow: 0 10px 26px rgba(255, 42, 68, 0.28);
+}
+.troll-enter:hover { filter: brightness(1.08); }
+.troll-enter:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.troll-seal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px dashed rgba(255, 210, 63, 0.4);
+    background: rgba(255, 210, 63, 0.07);
+}
+.troll-seal-badge {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 210, 63, 0.16);
+    border: 2px solid rgba(255, 210, 63, 0.6);
+    font-size: 1.3rem;
+    animation: troll-stamp 420ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+@keyframes troll-stamp {
+    from { transform: scale(2.2) rotate(-14deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.troll-seal-copy strong { display: block; font-weight: 900; font-size: 0.95rem; }
+.troll-seal-copy span { display: block; font-size: 0.78rem; color: var(--text-secondary, #8e95a5); }
+
+/* =========================================================================
+   IN-APP EXTRAS (status line, brand tagline, settings panel)
+   ========================================================================= */
+.troll-status-line {
+    margin-top: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #ffcf6b;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.troll-status-line::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ffcf6b;
+    box-shadow: 0 0 8px #ffcf6b;
+    animation: troll-pulse 1.6s ease-in-out infinite;
+}
+@keyframes troll-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+.troll-brand-tagline {
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--troll-duck);
+    opacity: 0.85;
+}
+
+.troll-settings-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary, #8e95a5);
+    padding: 0 2px 6px;
+}
+.troll-settings-actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 12px; }
+
+/* =========================================================================
+   LANGUAGE PICKER (the choice that changes nothing)
+   ========================================================================= */
+.troll-lang-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+.troll-lang {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    text-align: left;
+    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+.troll-lang:hover {
+    border-color: var(--border-brand, rgba(255, 42, 68, 0.3));
+    background: rgba(255, 42, 68, 0.1);
+    transform: translateY(-2px);
+}
+.troll-lang:focus-visible { outline: 2px solid var(--brand-main, #ff2a44); outline-offset: 2px; }
+.troll-lang-flag { font-size: 1.9rem; line-height: 1; }
+.troll-lang-label { font-weight: 800; font-size: 0.98rem; }
+
+/* =========================================================================
+   THE GEOPOLITICAL EXAMINATION
+   ========================================================================= */
+.troll-gate-card { width: min(520px, 100%); }
+.troll-gate-seal {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 42, 68, 0.16);
+    border: 2px solid rgba(255, 42, 68, 0.6);
+    color: var(--brand-main, #ff2a44);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+.troll-gate-feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 46px;
+    padding: 10px 13px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid transparent;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+.troll-gate-feedback:empty { display: none; }
+.troll-gate-feedback.is-wrong {
+    background: rgba(255, 68, 68, 0.1);
+    border-color: rgba(255, 68, 68, 0.3);
+    color: #ffb3b3;
+    animation: troll-shake 340ms ease;
+}
+.troll-gate-feedback.is-wrong span { font-weight: 650; color: var(--troll-duck); }
+.troll-gate-feedback.is-correct {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #9ff0bd;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    animation: troll-stamp 420ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+@keyframes troll-shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-7px); }
+    45%      { transform: translateX(6px); }
+    70%      { transform: translateX(-3px); }
+}
+
+/* A small permanent souvenir for anyone who answers correctly. */
+.troll-patriot .brand-logo { filter: drop-shadow(0 0 12px var(--brand-main, #ff2a44)) saturate(1.35); }
+.troll-patriot .brand-title::after { content: " \2605"; color: var(--brand-main, #ff2a44); }
+
+/* =========================================================================
+   EXTRA GAGS
+   ========================================================================= */
+
+/* --- penguin belly slide --- */
+@keyframes troll-slide-tilt {
+    0%, 100% { transform: rotate(-8deg); }
+    50%      { transform: rotate(-14deg); }
+}
+.troll-slide-tilt { animation: troll-slide-tilt 0.9s ease-in-out infinite; }
+
+/* --- rubber duck inspecting a button --- */
+.troll-inspector { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+.troll-verdict {
+    padding: 3px 9px;
+    border-radius: var(--radius-pill, 999px);
+    background: var(--troll-ink);
+    border: 1px solid rgba(255, 210, 63, 0.4);
+    color: var(--troll-duck);
+    font: 800 0.68rem/1.3 var(--font, sans-serif);
+    white-space: nowrap;
+    animation: troll-log-in 240ms ease both;
+}
+
+/* --- confetti for absolutely no reason --- */
+.troll-confetti-piece {
+    position: absolute;
+    top: -24px;
+    border-radius: 2px;
+    animation-name: troll-confetti-fall;
+    animation-timing-function: cubic-bezier(0.3, 0.6, 0.5, 1);
+    animation-fill-mode: forwards;
+}
+@keyframes troll-confetti-fall {
+    0%   { transform: translate3d(0, -30px, 0) rotate(0deg); opacity: 0; }
+    12%  { opacity: 1; }
+    100% { transform: translate3d(var(--troll-drift, 0), 105vh, 0) rotate(var(--troll-spin, 360deg)); opacity: 0.9; }
+}
+.troll-confetti-caption {
+    position: absolute;
+    left: 50%;
+    top: 16%;
+    transform: translateX(-50%);
+    padding: 9px 16px;
+    border-radius: var(--radius-pill, 999px);
+    background: var(--troll-ink);
+    border: 1px solid var(--border-strong, rgba(255, 255, 255, 0.15));
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    font: 800 0.82rem/1.3 var(--font, sans-serif);
+    color: var(--text-primary, #fff);
+    white-space: nowrap;
+    animation: troll-popup-life 4.6s ease forwards;
+}
+
+/* --- the fake error that immediately apologises --- */
+.troll-fake-error {
+    position: absolute;
+    width: 264px;
+    padding: 14px 16px 12px;
+    border-radius: var(--radius-md, 10px);
+    background: var(--troll-ink);
+    border: 1px solid rgba(255, 68, 68, 0.42);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+    animation: troll-fake-error-life 4.6s ease forwards;
+}
+.troll-fake-error-head { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.troll-fake-error-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 68, 68, 0.18);
+    border: 1px solid rgba(255, 68, 68, 0.5);
+    color: #ffb3b3;
+    font: 900 0.78rem/1 var(--font, sans-serif);
+}
+.troll-fake-error-head strong { font-size: 0.9rem; font-weight: 900; color: #ffb3b3; }
+.troll-fake-error p { font-size: 0.8rem; font-weight: 650; color: var(--text-secondary, #8e95a5); line-height: 1.45; }
+.troll-fake-error-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.troll-fake-btn {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border-light, rgba(255, 255, 255, 0.08));
+    font: 800 0.72rem/1.4 var(--font, sans-serif);
+    color: var(--text-secondary, #8e95a5);
+}
+.troll-fake-btn.primary { background: rgba(255, 68, 68, 0.2); border-color: rgba(255, 68, 68, 0.45); color: #ffd5d5; }
+.troll-fake-error.troll-apologising {
+    border-color: rgba(34, 197, 94, 0.42);
+}
+.troll-fake-error.troll-apologising .troll-fake-error-icon {
+    background: rgba(34, 197, 94, 0.18);
+    border-color: rgba(34, 197, 94, 0.5);
+    color: #9ff0bd;
+}
+.troll-fake-error.troll-apologising .troll-fake-error-head strong { color: #9ff0bd; }
+@keyframes troll-fake-error-life {
+    0%       { transform: translateY(10px) scale(0.94); opacity: 0; }
+    8%       { transform: translateY(0) scale(1); opacity: 1; }
+    12%      { transform: translateY(-2px) scale(1.015); }
+    16%, 86% { transform: translateY(0) scale(1); opacity: 1; }
+    100%     { transform: translateY(-10px) scale(0.96); opacity: 0; }
+}
+
+/* =========================================================================
+   MOTION OPT-OUT
+   Applied when `animations = false` or the OS asks for reduced motion.
+   Gags still appear (briefly, statically) so the humour survives, but nothing
+   moves.
+   ========================================================================= */
+.troll-no-anim #troll-layer *,
+.troll-no-anim .troll-overlay,
+.troll-no-anim .troll-overlay * {
+    animation: none !important;
+    transition: none !important;
+}
+.troll-no-anim .troll-sprite { opacity: 0.9; }
+
+@media (prefers-reduced-motion: reduce) {
+    #troll-layer *,
+    .troll-overlay,
+    .troll-overlay * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

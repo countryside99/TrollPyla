@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 70" width="130" height="70" role="img" aria-label="Sleeping cat">
+  <g fill="#f2a05c">
+    <!-- curled body -->
+    <path d="M14 56c0-20 16-32 40-32s44 10 44 30c0 5-3 8-8 8H22c-5 0-8-2-8-6z"/>
+    <!-- tail curled over body -->
+    <path d="M96 60c14-2 22-11 20-21-3 8-9 12-18 13z"/>
+    <!-- head -->
+    <circle cx="34" cy="42" r="15"/>
+    <path d="M23 31l-3-14 14 8z"/>
+    <path d="M41 30l10-12 3 16z"/>
+  </g>
+  <g stroke="#2a1f18" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M27 42q3.5 3 7 0"/>
+    <path d="M38 42q3.5 3 7 0"/>
+  </g>
+  <g fill="#8e95a5" opacity="0.75" font-family="Inter, sans-serif" font-weight="700">
+    <text x="82" y="26" font-size="12">z</text>
+    <text x="94" y="16" font-size="15">z</text>
+    <text x="109" y="8" font-size="18">z</text>
+  </g>
+</svg>

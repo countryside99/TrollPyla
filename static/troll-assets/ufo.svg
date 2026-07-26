@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 96" width="140" height="96" role="img" aria-label="UFO">
+  <!-- tractor beam -->
+  <path d="M48 52h44l22 42H26z" fill="#7ef2d0" opacity="0.16"/>
+  <!-- dome -->
+  <path d="M46 44a24 24 0 0 1 48 0z" fill="#9fe8ff" opacity="0.9"/>
+  <!-- hull -->
+  <ellipse cx="70" cy="48" rx="58" ry="16" fill="#7c8494"/>
+  <ellipse cx="70" cy="44" rx="58" ry="13" fill="#a8b2c2"/>
+  <g fill="#ff2a44">
+    <circle cx="26" cy="50" r="4"/>
+    <circle cx="48" cy="55" r="4"/>
+    <circle cx="70" cy="57" r="4"/>
+    <circle cx="92" cy="55" r="4"/>
+    <circle cx="114" cy="50" r="4"/>
+  </g>
+</svg>
